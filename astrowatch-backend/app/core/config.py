@@ -9,6 +9,7 @@ class Settings:
     PROJECT_NAME: str = "OrbeSystems AstroWatch API"
     NASA_API_KEY: str = os.getenv("NASA_API_KEY", "DEMO_KEY")
     ALLOWED_ORIGIN: str = os.getenv("ALLOWED_ORIGIN", "https://orbesystems.github.io")
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./astrowatch.db")
     NASA_BASE_URL: str = "https://api.nasa.gov"
 
 

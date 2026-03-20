@@ -3,6 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api import donki, earth, neows
 
+from app.db.database import engine
+from app.models import models
+
+# Initialize Database Tables
+models.Base.metadata.create_all(bind=engine)
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     description="Painel de controle operacional e telemetria planetária desenvolvido pela OrbeSystems.",

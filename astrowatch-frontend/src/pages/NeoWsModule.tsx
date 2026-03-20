@@ -168,13 +168,13 @@ const NeoWsModule = () => {
                                 const vel = parseFloat(ast.close_approach_data?.[0]?.relative_velocity?.kilometers_per_second || "0").toFixed(2);
                                 const dist = parseFloat(ast.close_approach_data?.[0]?.miss_distance?.lunar || "0").toFixed(2);
                                 
-                                // Mock Score OrbeSystems based on diameter + hazard
-                                const riskScore = isDanger ? (80 + Math.min(20, dia * 10)).toFixed(1) : (10 + Math.min(60, dia * 5)).toFixed(1);
+                                // Use the real Intelligence Score from OrbeSystems Backend
+                                const riskScore = ast.orbesystems_risk_score || 0;
 
                                 return (
                                 <div key={ast.id} className={isDanger ? "blinking-alert" : ""} style={{ display: 'grid', gridTemplateColumns: 'minmax(120px, 1fr) minmax(150px, 2fr) minmax(100px, 1fr) minmax(120px, 1fr) minmax(120px, 1fr)', padding: '20px 16px', background: isDanger ? 'rgba(255,23,68,0.1)' : 'rgba(255,255,255,0.02)', borderBottom: '1px solid rgba(255,255,255,0.05)', borderLeft: isDanger ? '4px solid var(--critical-red)' : '4px solid transparent', fontFamily: 'var(--font-mono)', fontSize: '0.9rem', alignItems: 'center' }}>
                                     
-                                    <span style={{ color: isDanger ? 'var(--critical-red)' : 'var(--text-primary)', fontWeight: 'bold' }}>{riskScore} / 100</span>
+                                    <span style={{ color: isDanger ? 'var(--critical-red)' : 'var(--text-primary)', fontWeight: 'bold' }}>{riskScore.toFixed(1)} / 100</span>
                                     <span style={{ color: 'var(--text-primary)' }}>{ast.name}</span>
                                     <span style={{ color: 'var(--text-secondary)' }}>{dia.toFixed(2)} km</span>
                                     <span style={{ color: 'var(--text-secondary)' }}>{vel} km/s</span>

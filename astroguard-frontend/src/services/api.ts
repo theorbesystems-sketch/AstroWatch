@@ -1,11 +1,11 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
 
 export const fetchDonkiData = async () => {
     try {
         const [cme, gst, flr] = await Promise.all([
-            fetch(`${BASE_URL}/nasa/donki/cme`).then(r => r.json()).catch(() => []),
-            fetch(`${BASE_URL}/nasa/donki/gst`).then(r => r.json()).catch(() => []),
-            fetch(`${BASE_URL}/nasa/donki/flr`).then(r => r.json()).catch(() => [])
+            fetch(`${BASE_URL}/donki/cme`).then(r => r.json()).catch(() => []),
+            fetch(`${BASE_URL}/donki/geomagnetic-storm`).then(r => r.json()).catch(() => []),
+            fetch(`${BASE_URL}/donki/solar-flare`).then(r => r.json()).catch(() => [])
         ]);
         return { cme, gst, flr };
     } catch(err) {
@@ -16,7 +16,7 @@ export const fetchDonkiData = async () => {
 
 export const fetchNeoWsData = async () => {
     try {
-        const res = await fetch(`${BASE_URL}/nasa/neo/feed`);
+        const res = await fetch(`${BASE_URL}/neows/feed`);
         return await res.json();
     } catch (err) {
         console.error("API error NeoWs", err);

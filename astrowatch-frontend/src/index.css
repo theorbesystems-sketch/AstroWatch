@@ -1,20 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
-  --bg-deep-space: #05070a;
-  --cyber-green: #00e5ff;
-  --cyber-green-glow: rgba(0, 229, 255, 0.3);
-  --warning-yellow: #ffc400;
-  --critical-red: #ff1744;
-  --glass-bg: rgba(10, 14, 23, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.05);
-  --glass-highlight: rgba(255, 255, 255, 0.1);
-  --text-primary: #f8fafc;
+  --bg-deep-space: #050a12;
+  --cyber-cyan: #00f2ff;
+  --cyber-cyan-glow: rgba(0, 242, 255, 0.3);
+  --warning-orange: #ff9d00;
+  --critical-red: #ff4d4d;
+  --text-primary: #e0e6ed;
   --text-secondary: #94a3b8;
   --text-muted: #475569;
-  
-  --font-mono: 'JetBrains Mono', monospace;
-  --font-sans: 'Inter', sans-serif;
+  --glass-bg: rgba(10, 20, 35, 0.6);
+  --glass-border: rgba(0, 242, 255, 0.2);
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
 * {
@@ -23,22 +21,20 @@
 
 body {
   margin: 0;
-  padding: 0;
   background-color: var(--bg-deep-space);
   color: var(--text-primary);
-  font-family: var(--font-sans);
-  overflow-x: hidden;
+  font-family: var(--font-main);
   -webkit-font-smoothing: antialiased;
+  overflow: hidden; /* App handles its own scroll */
 }
 
 .glass-panel {
   background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  transition: border-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
 }
 
 .glass-panel:hover {
@@ -47,8 +43,6 @@ body {
 
 .tactical-title {
   font-family: var(--font-mono);
-  text-transform: uppercase;
-  letter-spacing: 2px;
   font-weight: 700;
   color: var(--cyber-green);
   text-shadow: 0 0 8px var(--cyber-green-glow);

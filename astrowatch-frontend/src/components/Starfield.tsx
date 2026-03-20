@@ -59,8 +59,8 @@ const Starfield: React.FC = () => {
 
         // Optional subtle gradient
         const gradient = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, width);
-        gradient.addColorStop(0, 'rgba(10, 14, 23, 0.8)');
-        gradient.addColorStop(1, '#05070a');
+        gradient.addColorStop(0, 'rgba(10, 20, 35, 0.9)');
+        gradient.addColorStop(1, '#050a12');
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, width, height);
 

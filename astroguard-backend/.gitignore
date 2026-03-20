@@ -1,0 +1,31 @@
+# Variáveis de ambiente (NUNCA subir pro GitHub)
+.env
+
+# Cache do Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Ambientes virtuais
+venv/
+env/
+.venv/
+
+# Distribuição / packaging
+.eggs/
+dist/
+build/
+*.egg-info/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

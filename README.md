@@ -26,10 +26,12 @@ Os endpoints do *OrbeSystems AstroWatch API* validam ativamente por cabeçalho C
 
 **Backend (Render, Heroku, Railway, etc):**
 - O projeto já entrega o `Procfile` (`web: uvicorn app.main:app --host 0.0.0.0 --port $PORT`).
+- Root Directory: `astrowatch-backend`.
 - Basta plugar o repositório na Cloud. A aplicação reconhecerá automaticamente a porta liberada.
 
 **Frontend (GitHub Pages, Vercel, Netlify):**
 - O SPA utiliza `HashRouter`, sendo 100% nativo e imune a erros 404 de navegação em qualquer CDN (Static Hosts).
+- Root Directory: `astrowatch-frontend`.
 - Comando de Build: `npm run build`
 - Pasta publicável gerada: `dist/`
 

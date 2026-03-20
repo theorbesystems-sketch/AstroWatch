@@ -1,27 +1,30 @@
 services:
-  # Backend: AstroWatch API (FastAPI)
+  # Backend: AstroWatch API (FastAPI) by OrbeSystems
   - type: web
     name: astrowatch-api
     env: python
+    rootDir: astrowatch-backend
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
-    rootDir: astroguard-backend
     envVars:
       - key: NASA_API_KEY
-        sync: false # User must provide this in the Render Dashboard
+        sync: false # O operador deve preencher no painel de Environment do Render
       - key: ALLOWED_ORIGIN
-        value: https://astrowatch-ui.vercel.app # Example, user will update
+        fromService:
+          type: web
+          name: astrowatch-ui
+          property: url # Injeta automaticamente a URL segura do frontend
 
-  # Frontend: AstroWatch UI (Static)
+  # Frontend: AstroWatch UI (Static/Vite) by OrbeSystems
   - type: web
     name: astrowatch-ui
     env: static
+    rootDir: astrowatch-frontend
     buildCommand: npm install && npm run build
     publishPath: dist
-    rootDir: astroguard-frontend
     envVars:
       - key: VITE_API_BASE_URL
         fromService:
-          name: astrowatch-api
           type: web
-          property: host
+          name: astrowatch-api
+          property: url # Entrega a URL completa (https://...) para o frontend consumir

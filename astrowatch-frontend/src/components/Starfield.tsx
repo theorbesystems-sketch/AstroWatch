@@ -99,6 +99,7 @@ const Starfield: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
+      id="starfield"
       style={{
         position: 'fixed',
         top: 0,

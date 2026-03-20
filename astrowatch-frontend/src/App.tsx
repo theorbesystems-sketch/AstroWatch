@@ -57,7 +57,7 @@ function App() {
         </header>
 
         {/* Dynamic Route Content with Framer Motion transitions */}
-        <main className="glass-panel" style={{ flex: 1, position: 'relative', overflow: 'hidden', margin: '0 16px 16px 16px', display: 'flex', flexDirection: 'column' }}>
+        <main className="glass-panel dashboard-container" style={{ flex: 1, position: 'relative', overflow: 'auto', margin: '0 16px 16px 16px', display: 'flex', flexDirection: 'column' }}>
           <AnimatePresence mode="wait">
             <Routes>
               <Route path="/" element={<motion.div key="neows" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} style={{ flex: 1, overflowY: 'auto' }}><NeoWsModule /></motion.div>} />

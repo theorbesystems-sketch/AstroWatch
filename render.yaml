@@ -16,8 +16,9 @@ services:
           property: url # Injeta automaticamente a URL segura do frontend
 
   # Frontend: AstroWatch UI (Static/Vite) by OrbeSystems
-  - type: static
+  - type: web
     name: astrowatch-ui
+    env: static
     rootDir: astrowatch-frontend
     buildCommand: npm install && npm run build
     publishPath: dist

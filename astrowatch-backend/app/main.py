@@ -35,8 +35,13 @@ app.include_router(neows.router, prefix="/api/v1/neows", tags=["☄️ Asteroide
 
 
 # ---------------------------------------------------------------------------
-# Health check
+# Health check & Keep-Alive
 # ---------------------------------------------------------------------------
+@app.get("/ping", tags=["Status"])
+async def ping():
+    return {"status": "operational", "message": "Stay awake, AstroWatch!"}
+
+
 @app.get("/", tags=["Status"])
 async def root():
     return {

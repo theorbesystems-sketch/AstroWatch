@@ -16,11 +16,11 @@ app = FastAPI(
 )
 
 # ---------------------------------------------------------------------------
-# Cyber Safety: restringe as origens que podem acessar a API
+# Cyber Safety: permite acesso público aos dados (Dashboard de Consumo)
 # ---------------------------------------------------------------------------
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.ALLOWED_ORIGIN],  # Apenas seu GitHub Pages ou localhost
+    allow_origins=["*"],  # Permite Vercel, Render e outros domínios
     allow_credentials=True,
     allow_methods=["GET"],  # Dashboard de consumo — somente GET necessário
     allow_headers=["*"],

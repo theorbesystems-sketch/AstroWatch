@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import Globe from 'react-globe.gl';
 import { Target, BarChart2, MapPin, Eye } from 'lucide-react';
 import { fetchEonetData } from '../services/api';
@@ -9,6 +9,14 @@ const EarthModule = () => {
     const [altitude] = useState(1.5);
     const [inputLat, setInputLat] = useState('-23.5505');
     const [inputLng, setInputLng] = useState('-46.6333');
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [globeSize, setGlobeSize] = useState({ w: 800, h: 600 });
+
+    const updateSize = useCallback(() => {
+        if (containerRef.current) {
+            setGlobeSize({ w: containerRef.current.offsetWidth, h: containerRef.current.offsetHeight });
+        }
+    }, []);
 
     // EONET State
     const [ringsData, setRingsData] = useState<any[]>([]);
@@ -30,6 +38,9 @@ const EarthModule = () => {
             globeEl.current.controls().autoRotate = true;
             globeEl.current.controls().autoRotateSpeed = 0.5;
         }
+        updateSize();
+        window.addEventListener('resize', updateSize);
+        return () => window.removeEventListener('resize', updateSize);
 
         // Fetch EONET
         fetchEonetData().then((data) => {
@@ -138,7 +149,7 @@ const EarthModule = () => {
             </div>
 
             {/* Center: Globe View */}
-            <div style={{ flex: 1, position: 'relative', borderRadius: '4px', overflow: 'hidden', border: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.3)', boxShadow: 'inset 0 0 50px rgba(0,0,0,1)' }}>
+            <div ref={containerRef} style={{ flex: 1, position: 'relative', borderRadius: '4px', overflow: 'hidden', border: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.3)', boxShadow: 'inset 0 0 50px rgba(0,0,0,1)' }}>
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
                     <Globe
                         ref={globeEl}
@@ -151,8 +162,8 @@ const EarthModule = () => {
                         ringMaxRadius="maxR"
                         ringPropagationSpeed="propagationSpeed"
                         ringRepeatPeriod="repeatPeriod"
-                        width={window.innerWidth - 750}
-                        height={window.innerHeight - 200}
+                        width={globeSize.w}
+                        height={globeSize.h}
                     />
                 </div>
                 {/* HUD overlays */}

@@ -22,3 +22,11 @@ async def get_epic_latest():
     Retorna as imagens mais recentes do satélite EPIC (Earth Polychromatic Imaging Camera).
     """
     return await fetch_from_nasa("/EPIC/api/natural/images", params={})
+
+
+@router.get("/eonet", summary="Earth Observatory Natural Event Tracker (EONET)")
+async def get_eonet(status: str = "open", days: int = 20):
+    """
+    Retorna eventos naturais na Terra tracker (Incêndios, tempestades, vulcões).
+    """
+    return await fetch_from_nasa("/EONET/api/v3/events", params={"status": status, "days": days})

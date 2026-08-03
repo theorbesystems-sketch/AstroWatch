@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { fetchNeoWsData } from '../services/api';
 import { AlertCircle, ChevronLeft, ChevronRight, Crosshair } from 'lucide-react';
+import SpaceXModule from '../components/SpaceXModule';
 
 const RadarDisplay = ({ asteroids }: { asteroids: any[] }) => {
     // A pure CSS/SVG radar sweeping effect!
@@ -124,6 +125,11 @@ const NeoWsModule = () => {
                      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
                         O sistema de defesa planetária cataloga detritos e asteroides (NEOs). Objetos que violam os limites da gravidade terrestre ou representam um Score de Risco acima de 85 disparam varreduras imediatas na matriz à direita.
                      </p>
+                </div>
+                
+                {/* SpaceX Module Injected */}
+                <div style={{ flex: 1, minHeight: '500px' }}>
+                    <SpaceXModule />
                 </div>
             </div>
 

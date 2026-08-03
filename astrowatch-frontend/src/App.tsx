@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { HashRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom';
-import { Shield, Satellite, AlertTriangle } from 'lucide-react';
+import { Shield, Satellite, AlertTriangle, Orbit, Camera } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Starfield from './components/Starfield';
 
 import DonkiModule from './pages/DonkiModule';
 import EarthModule from './pages/EarthModule';
 import NeoWsModule from './pages/NeoWsModule';
+import GalaxyModule from './pages/GalaxyModule';
+import ApodModule from './pages/ApodModule';
 
 function App() {
   const [criticalAlert, setCriticalAlert] = useState<string | null>(null);
@@ -27,7 +29,7 @@ function App() {
 
       {/* Main App Container */}
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', paddingTop: criticalAlert ? '50px' : '0' }}>
-        
+
         {/* Header / Navigation */}
         <header className="glass-panel" style={{ margin: '16px', padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid var(--cyber-cyan)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -48,6 +50,12 @@ function App() {
             <NavLink to="/earth" style={({ isActive }) => ({ textDecoration: 'none', color: isActive ? 'var(--cyber-cyan)' : 'var(--text-primary)', fontWeight: isActive ? 'bold' : 'normal', display: 'flex', alignItems: 'center', gap: '8px', textShadow: isActive ? '0 0 12px var(--cyber-cyan-glow)' : 'none', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' })}>
               <Satellite size={18} /> Telemetria (Earth)
             </NavLink>
+            <NavLink to="/galaxy" style={({ isActive }) => ({ textDecoration: 'none', color: isActive ? 'var(--cyber-cyan)' : 'var(--text-primary)', fontWeight: isActive ? 'bold' : 'normal', display: 'flex', alignItems: 'center', gap: '8px', textShadow: isActive ? '0 0 12px var(--cyber-cyan-glow)' : 'none', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' })}>
+              <Orbit size={18} /> Navegação Galáctica
+            </NavLink>
+            <NavLink to="/apod" style={({ isActive }) => ({ textDecoration: 'none', color: isActive ? 'var(--cyber-cyan)' : 'var(--text-primary)', fontWeight: isActive ? 'bold' : 'normal', display: 'flex', alignItems: 'center', gap: '8px', textShadow: isActive ? '0 0 12px var(--cyber-cyan-glow)' : 'none', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' })}>
+              <Camera size={18} /> Galeria APOD
+            </NavLink>
           </nav>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -63,11 +71,13 @@ function App() {
               <Route path="/" element={<motion.div key="neows" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} style={{ flex: 1, overflowY: 'auto' }}><NeoWsModule /></motion.div>} />
               <Route path="/donki" element={<motion.div key="donki" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} style={{ flex: 1, overflowY: 'auto' }}><DonkiModule /></motion.div>} />
               <Route path="/earth" element={<motion.div key="earth" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} style={{ flex: 1, overflowY: 'auto' }}><EarthModule /></motion.div>} />
+              <Route path="/galaxy" element={<motion.div key="galaxy" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} style={{ flex: 1, overflowY: 'auto' }}><GalaxyModule /></motion.div>} />
+              <Route path="/apod" element={<motion.div key="apod" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} style={{ flex: 1, overflowY: 'auto', display: 'flex' }}><ApodModule /></motion.div>} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </AnimatePresence>
         </main>
-        
+
         {/* Footer Institutional Signature */}
         <footer style={{ textAlign: 'center', padding: '12px', fontSize: '0.75rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', background: 'rgba(0,0,0,0.5)', zIndex: 10, borderTop: '1px solid var(--glass-border)', letterSpacing: '1px' }}>
           © 2026 OrbeSystems | AstroWatch Platform | Sentinel Access Level: Granted

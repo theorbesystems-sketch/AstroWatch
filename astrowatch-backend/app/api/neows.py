@@ -66,3 +66,30 @@ async def get_neo_lookup(asteroid_id: str):
          data["orbesystems_risk_score"] = 0.0
          
     return data
+
+
+@router.get("/browse", summary="Navegar em toda a base de dados (NeoWs Browse)")
+async def get_neo_browse():
+    """
+    Retorna o conjunto de dados completo paginado de asteroides próximos à Terra.
+    """
+    data = await fetch_from_nasa("/neo/rest/v1/neo/browse")
+    
+    # Inject Score for browse logic
+    if isinstance(data, dict) and "near_earth_objects" in data:
+        for asteroid in data["near_earth_objects"]:
+            try:
+                dia = asteroid.get("estimated_diameter", {}).get("meters", {}).get("estimated_diameter_max", 0)
+                # Ensure close_approach_data exists before extracting
+                if asteroid.get("close_approach_data"):
+                    approach = asteroid["close_approach_data"][0]
+                    vel = float(approach.get("relative_velocity", {}).get("kilometers_per_second", 0))
+                    dist = float(approach.get("miss_distance", {}).get("lunar", 0))
+                else:
+                    vel, dist = 0.0, 0.0
+                haz = asteroid.get("is_potentially_hazardous_asteroid", False)
+                asteroid["orbesystems_risk_score"] = calculate_risk_score(dia, vel, dist, haz)
+            except (KeyError, IndexError, ValueError):
+                asteroid["orbesystems_risk_score"] = 0.0
+                
+    return data

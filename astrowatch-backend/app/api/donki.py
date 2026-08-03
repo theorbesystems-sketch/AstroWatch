@@ -84,3 +84,67 @@ async def get_geomagnetic_storm(startDate: str = None, endDate: str = None):
     if endDate:
         params["endDate"] = endDate
     return await fetch_from_nasa("/DONKI/GST", params=params)
+
+
+@router.get("/cme-analysis", summary="Análise de CME (CME Analysis)")
+async def get_cme_analysis(startDate: str = None, endDate: str = None, mostAccurateOnly: bool = True, speed: int = 0, halfAngle: int = 0, catalog: str = "ALL"):
+    params = {"mostAccurateOnly": str(mostAccurateOnly).lower(), "speed": speed, "halfAngle": halfAngle, "catalog": catalog}
+    if startDate: params["startDate"] = startDate
+    if endDate: params["endDate"] = endDate
+    return await fetch_from_nasa("/DONKI/CMEAnalysis", params=params)
+
+
+@router.get("/ips", summary="Choque Interplanetário (IPS)")
+async def get_ips(startDate: str = None, endDate: str = None, location: str = "ALL", catalog: str = "ALL"):
+    params = {"location": location, "catalog": catalog}
+    if startDate: params["startDate"] = startDate
+    if endDate: params["endDate"] = endDate
+    return await fetch_from_nasa("/DONKI/IPS", params=params)
+
+
+@router.get("/sep", summary="Partículas Energéticas Solares (SEP)")
+async def get_sep(startDate: str = None, endDate: str = None):
+    params = {}
+    if startDate: params["startDate"] = startDate
+    if endDate: params["endDate"] = endDate
+    return await fetch_from_nasa("/DONKI/SEP", params=params)
+
+
+@router.get("/mpc", summary="Cruzamento da Magnetopausa (MPC)")
+async def get_mpc(startDate: str = None, endDate: str = None):
+    params = {}
+    if startDate: params["startDate"] = startDate
+    if endDate: params["endDate"] = endDate
+    return await fetch_from_nasa("/DONKI/MPC", params=params)
+
+
+@router.get("/rbe", summary="Enhancement do Cinturão de Radiação (RBE)")
+async def get_rbe(startDate: str = None, endDate: str = None):
+    params = {}
+    if startDate: params["startDate"] = startDate
+    if endDate: params["endDate"] = endDate
+    return await fetch_from_nasa("/DONKI/RBE", params=params)
+
+
+@router.get("/hss", summary="Fluxo de Alta Velocidade (HSS)")
+async def get_hss(startDate: str = None, endDate: str = None):
+    params = {}
+    if startDate: params["startDate"] = startDate
+    if endDate: params["endDate"] = endDate
+    return await fetch_from_nasa("/DONKI/HSS", params=params)
+
+
+@router.get("/wsa-enlil", summary="Simulações WSA+Enlil")
+async def get_wsa_enlil(startDate: str = None, endDate: str = None):
+    params = {}
+    if startDate: params["startDate"] = startDate
+    if endDate: params["endDate"] = endDate
+    return await fetch_from_nasa("/DONKI/WSAEnlilSimulations", params=params)
+
+
+@router.get("/notifications", summary="Notificações DONKI")
+async def get_notifications(startDate: str = None, endDate: str = None, type: str = "all"):
+    params = {"type": type}
+    if startDate: params["startDate"] = startDate
+    if endDate: params["endDate"] = endDate
+    return await fetch_from_nasa("/DONKI/notifications", params=params)

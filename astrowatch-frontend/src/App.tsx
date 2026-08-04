@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { HashRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom';
-import { Shield, Satellite, AlertTriangle, Orbit, Camera } from 'lucide-react';
+import { Shield, Satellite, AlertTriangle, Orbit, Camera, Globe2, Sun } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Starfield from './components/Starfield';
 
@@ -9,18 +9,28 @@ import EarthModule from './pages/EarthModule';
 import NeoWsModule from './pages/NeoWsModule';
 import GalaxyModule from './pages/GalaxyModule';
 import ApodModule from './pages/ApodModule';
+import UniverseHub from './pages/UniverseHub';
 
 function App() {
   const [criticalAlert, setCriticalAlert] = useState<string | null>(null);
 
+  const navItems = [
+    { path: '/universe', name: 'Universo Hub', icon: Globe2 },
+    { path: '/galaxy', name: 'Navegação 3D', icon: Orbit },
+    { path: '/earth', name: 'Telemetria Earth', icon: Satellite },
+    { path: '/neows', name: 'Radar NeoWs', icon: Shield },
+    { path: '/donki', name: 'Clima Solar', icon: Sun },
+    { path: '/apod', name: 'Galeria APOD', icon: Camera }
+  ];
+
   return (
     <HashRouter>
-      {/* Immersive Background */}
+      {/* Deep Space Background Canvas */}
       <Starfield />
 
-      {/* Global Alerts Banner */}
+      {/* Global Tactical Alert Banner */}
       {criticalAlert && (
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 9999, background: 'var(--critical-red)', color: 'white', padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 9999, background: 'var(--critical-red)', color: 'white', padding: '10px 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontFamily: 'var(--font-mono)' }}>
           <AlertTriangle className="mr-2" style={{ marginRight: '8px' }} />
           {criticalAlert}
           <button onClick={() => setCriticalAlert(null)} style={{ marginLeft: '16px', background: 'transparent', border: '1px solid white', color: 'white', padding: '4px 12px', borderRadius: '4px', cursor: 'pointer' }}>DISMISS</button>
@@ -28,60 +38,87 @@ function App() {
       )}
 
       {/* Main App Container */}
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', paddingTop: criticalAlert ? '50px' : '0' }}>
+      <div style={{ display: 'flex', minHeight: '100vh', width: '100vw', overflow: 'hidden', paddingTop: criticalAlert ? '45px' : '0' }}>
 
-        {/* Header / Navigation */}
-        <header className="glass-panel" style={{ margin: '16px', padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid var(--cyber-cyan)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <Shield size={32} color="var(--cyber-cyan)" />
-            <div>
-              <div className="tactical-title" style={{ fontSize: '1.4rem', marginBottom: '2px', color: 'var(--cyber-cyan)' }}>AstroWatch</div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', letterSpacing: '1px' }}>by OrbeSystems</div>
+        {/* Tactical Sleek Collapsible Sidebar Navigation */}
+        <aside style={{
+          width: '240px',
+          background: 'rgba(2, 5, 12, 0.92)',
+          backdropFilter: 'blur(16px)',
+          borderRight: '1px solid var(--glass-border)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          zIndex: 100
+        }}>
+          <div>
+            {/* Header Brand */}
+            <div style={{ padding: '24px 20px', borderBottom: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <Shield size={28} color="var(--cyber-cyan)" />
+              <div>
+                <div className="tactical-title" style={{ fontSize: '1.2rem', color: 'var(--cyber-cyan)', margin: 0, letterSpacing: '1px' }}>AstroWatch</div>
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', letterSpacing: '1px' }}>ORBESYSTEMS AI</div>
+              </div>
+            </div>
+
+            {/* Navigation Menu */}
+            <nav style={{ padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    style={({ isActive }) => ({
+                      textDecoration: 'none',
+                      color: isActive ? 'var(--cyber-cyan)' : 'var(--text-secondary)',
+                      background: isActive ? 'rgba(0, 240, 255, 0.12)' : 'transparent',
+                      borderLeft: `3px solid ${isActive ? 'var(--cyber-cyan)' : 'transparent'}`,
+                      padding: '12px 14px',
+                      borderRadius: '0 6px 6px 0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.85rem',
+                      transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                    })}
+                  >
+                    <Icon size={18} />
+                    <span>{item.name}</span>
+                  </NavLink>
+                );
+              })}
+            </nav>
+          </div>
+
+          {/* System Telemetry Indicator at Sidebar Bottom */}
+          <div style={{ padding: '16px 20px', borderTop: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.4)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#00f0ff', boxShadow: '0 0 8px #00f0ff' }}></div>
+              <span style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--cyber-cyan)' }}>SENTINEL ONLINE</span>
+            </div>
+            <div style={{ fontSize: '0.65rem', fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
+              DEEP SPACE RADAR v2.5
             </div>
           </div>
+        </aside>
 
-          <nav style={{ display: 'flex', gap: '32px' }}>
-            <NavLink to="/" style={({ isActive }) => ({ textDecoration: 'none', color: isActive ? 'var(--cyber-cyan)' : 'var(--text-primary)', fontWeight: isActive ? 'bold' : 'normal', display: 'flex', alignItems: 'center', gap: '8px', textShadow: isActive ? '0 0 12px var(--cyber-cyan-glow)' : 'none', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' })}>
-              <Shield size={18} /> Radar (NeoWs)
-            </NavLink>
-            <NavLink to="/donki" style={({ isActive }) => ({ textDecoration: 'none', color: isActive ? 'var(--cyber-cyan)' : 'var(--text-primary)', fontWeight: isActive ? 'bold' : 'normal', display: 'flex', alignItems: 'center', gap: '8px', textShadow: isActive ? '0 0 12px var(--cyber-cyan-glow)' : 'none', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' })}>
-              <Shield size={18} /> Clima Espacial (DONKI)
-            </NavLink>
-            <NavLink to="/earth" style={({ isActive }) => ({ textDecoration: 'none', color: isActive ? 'var(--cyber-cyan)' : 'var(--text-primary)', fontWeight: isActive ? 'bold' : 'normal', display: 'flex', alignItems: 'center', gap: '8px', textShadow: isActive ? '0 0 12px var(--cyber-cyan-glow)' : 'none', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' })}>
-              <Satellite size={18} /> Telemetria (Earth)
-            </NavLink>
-            <NavLink to="/galaxy" style={({ isActive }) => ({ textDecoration: 'none', color: isActive ? 'var(--cyber-cyan)' : 'var(--text-primary)', fontWeight: isActive ? 'bold' : 'normal', display: 'flex', alignItems: 'center', gap: '8px', textShadow: isActive ? '0 0 12px var(--cyber-cyan-glow)' : 'none', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' })}>
-              <Orbit size={18} /> Navegação Galáctica
-            </NavLink>
-            <NavLink to="/apod" style={({ isActive }) => ({ textDecoration: 'none', color: isActive ? 'var(--cyber-cyan)' : 'var(--text-primary)', fontWeight: isActive ? 'bold' : 'normal', display: 'flex', alignItems: 'center', gap: '8px', textShadow: isActive ? '0 0 12px var(--cyber-cyan-glow)' : 'none', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' })}>
-              <Camera size={18} /> Galeria APOD
-            </NavLink>
-          </nav>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--cyber-cyan)', boxShadow: '0 0 12px var(--cyber-cyan)' }}></div>
-            <span style={{ fontSize: '0.85rem', fontFamily: 'var(--font-mono)', color: 'var(--cyber-cyan)', letterSpacing: '1px' }}>SENTINEL ACCESS: GRANTED</span>
-          </div>
-        </header>
-
-        {/* Dynamic Route Content with Framer Motion transitions */}
-        <main className="glass-panel dashboard-container" style={{ flex: 1, position: 'relative', overflow: 'auto', margin: '0 16px 16px 16px', display: 'flex', flexDirection: 'column' }}>
+        {/* Dynamic Route Content Area */}
+        <main style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', position: 'relative' }}>
           <AnimatePresence mode="wait">
             <Routes>
-              <Route path="/" element={<motion.div key="neows" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} style={{ flex: 1, overflowY: 'auto' }}><NeoWsModule /></motion.div>} />
-              <Route path="/donki" element={<motion.div key="donki" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} style={{ flex: 1, overflowY: 'auto' }}><DonkiModule /></motion.div>} />
-              <Route path="/earth" element={<motion.div key="earth" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} style={{ flex: 1, overflowY: 'auto' }}><EarthModule /></motion.div>} />
-              <Route path="/galaxy" element={<motion.div key="galaxy" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} style={{ flex: 1, overflowY: 'auto' }}><GalaxyModule /></motion.div>} />
-              <Route path="/apod" element={<motion.div key="apod" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} style={{ flex: 1, overflowY: 'auto', display: 'flex' }}><ApodModule /></motion.div>} />
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="/" element={<Navigate to="/universe" replace />} />
+              <Route path="/universe" element={<motion.div key="universe" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} style={{ flex: 1, display: 'flex', overflow: 'hidden' }}><UniverseHub /></motion.div>} />
+              <Route path="/galaxy" element={<motion.div key="galaxy" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} style={{ flex: 1, display: 'flex', overflow: 'hidden' }}><GalaxyModule /></motion.div>} />
+              <Route path="/earth" element={<motion.div key="earth" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} style={{ flex: 1, display: 'flex', overflow: 'hidden' }}><EarthModule /></motion.div>} />
+              <Route path="/neows" element={<motion.div key="neows" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} style={{ flex: 1, display: 'flex', overflow: 'hidden' }}><NeoWsModule /></motion.div>} />
+              <Route path="/donki" element={<motion.div key="donki" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} style={{ flex: 1, display: 'flex', overflow: 'hidden' }}><DonkiModule /></motion.div>} />
+              <Route path="/apod" element={<motion.div key="apod" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} style={{ flex: 1, display: 'flex', overflow: 'hidden' }}><ApodModule /></motion.div>} />
+              <Route path="*" element={<Navigate to="/universe" replace />} />
             </Routes>
           </AnimatePresence>
         </main>
-
-        {/* Footer Institutional Signature */}
-        <footer style={{ textAlign: 'center', padding: '12px', fontSize: '0.75rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', background: 'rgba(0,0,0,0.5)', zIndex: 10, borderTop: '1px solid var(--glass-border)', letterSpacing: '1px' }}>
-          © 2026 OrbeSystems | AstroWatch Platform | Sentinel Access Level: Granted
-        </footer>
       </div>
     </HashRouter>
   );

@@ -5,6 +5,7 @@ import { solarSystemData } from '../../services/galaxyData';
 import type { CelestialBodyData } from '../../services/galaxyData';
 import CelestialBody from './CelestialBody';
 import GalacticParticles from './GalacticParticles';
+import AsteroidBelt from './AsteroidBelt';
 
 interface Props {
     onSelectBody: (data: CelestialBodyData) => void;
@@ -16,43 +17,74 @@ export default function GalaxyScene({ onSelectBody, exoplanets = [], selectedBod
     const controlsRef = useRef<any>(null);
 
     useEffect(() => {
-        if (controlsRef.current) {
-            if (selectedBody) {
-                const r = selectedBody.orbitRadius;
-                if (r === 0) { // Sun
-                    controlsRef.current.setLookAt(0, 30, 60, 0, 0, 0, true);
-                } else {
-                    // Fly close to the planet's general radius ring
-                    controlsRef.current.setLookAt(r + 5, 5, 20, r, 0, 0, true);
-                }
+        if (!controlsRef.current) return;
+
+        if (selectedBody) {
+            const r = selectedBody.orbitRadius;
+            if (r === 0) {
+                // Focus on Sun
+                controlsRef.current.setLookAt(0, 15, 25, 0, 0, 0, true);
             } else {
-                // Zoom-out overview
-                controlsRef.current.setLookAt(0, 100, 150, 0, 0, 0, true);
+                // Fly smoothly to target planet's radial position
+                const targetDist = selectedBody.radius * 3 + 8;
+                controlsRef.current.setLookAt(
+                    r + targetDist,
+                    targetDist * 0.4,
+                    targetDist * 0.8,
+                    r,
+                    0,
+                    0,
+                    true
+                );
             }
+        } else {
+            // Zoom out overview of entire Solar System
+            controlsRef.current.setLookAt(0, 70, 160, 0, 0, 0, true);
         }
     }, [selectedBody]);
+
     return (
-        <Canvas camera={{ position: [0, 40, 80], fov: 45 }}>
-            <color attach="background" args={['#03050a']} />
+        <Canvas camera={{ position: [0, 70, 160], fov: 45 }} style={{ width: '100%', height: '100%' }}>
+            <color attach="background" args={['#020409']} />
+            <fog attach="fog" args={['#020409', 180, 450]} />
 
-            <ambientLight intensity={0.1} />
-            <pointLight position={[0, 0, 0]} intensity={2} color="#ffffff" distance={200} />
+            {/* Ambient & Core Solar Lighting */}
+            <ambientLight intensity={0.15} />
 
+            {/* Camera Controls with Locked Safety Boundaries */}
             <CameraControls
                 ref={controlsRef}
-                maxDistance={400}
-                minDistance={2}
+                maxDistance={350}
+                minDistance={3}
+                maxPolarAngle={Math.PI / 2 + 0.1} // Prevent going upside down under plane
+                minPolarAngle={0.1}
             />
 
-            <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+            {/* Deep Space Atmosphere */}
+            <Stars radius={250} depth={80} count={12000} factor={4} saturation={0.5} fade speed={1.5} />
             <GalacticParticles />
 
+            {/* Instanced Asteroid Belt between Mars & Jupiter */}
+            <AsteroidBelt count={1500} innerRadius={34} outerRadius={44} />
+
+            {/* Solar System Celestial Bodies */}
             {solarSystemData.map(body => (
-                <CelestialBody key={body.id} data={body} onBodyClick={onSelectBody} />
+                <CelestialBody
+                    key={body.id}
+                    data={body}
+                    onBodyClick={onSelectBody}
+                    isFocused={selectedBody?.id === body.id}
+                />
             ))}
 
+            {/* Procedural Exoplanets */}
             {exoplanets.map(body => (
-                <CelestialBody key={body.id} data={body} onBodyClick={onSelectBody} />
+                <CelestialBody
+                    key={body.id}
+                    data={body}
+                    onBodyClick={onSelectBody}
+                    isFocused={selectedBody?.id === body.id}
+                />
             ))}
         </Canvas>
     );
